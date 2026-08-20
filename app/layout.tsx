@@ -9,26 +9,52 @@ const fontSans = Plus_Jakarta_Sans({
   display: 'swap',
 })
 
+const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3000'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: 'Buku Tamu SPPG Bontang Selatan',
-  description: 'Buku Tamu Digital SPPG Bontang Selatan Berbas Tengah',
-  generator: 'v0.app',
+  description: 'Buku Tamu Digital SPPG Bontang Selatan Berbas Tengah - Yayasan Fahreza Berkah Jaya',
   icons: {
     icon: [
       {
         url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
+        sizes: '32x32',
+        type: 'image/png',
       },
       {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
       },
     ],
+    shortcut: '/icon-light-32x32.png',
     apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: 'Buku Tamu SPPG Bontang Selatan',
+    description: 'Buku Tamu Digital SPPG Bontang Selatan Berbas Tengah - Yayasan Fahreza Berkah Jaya',
+    siteName: 'Buku Tamu SPPG Bontang Selatan',
+    locale: 'id_ID',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 630,
+        height: 630,
+        alt: 'Logo Yayasan Fahreza Berkah Jaya',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Buku Tamu SPPG Bontang Selatan',
+    description: 'Buku Tamu Digital SPPG Bontang Selatan Berbas Tengah - Yayasan Fahreza Berkah Jaya',
+    images: ['/og-image.png'],
   },
 }
 
