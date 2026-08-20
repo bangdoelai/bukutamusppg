@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { CalendarDays, Clock3, FileText, MapPin, ShieldCheck } from 'lucide-react'
+import { CalendarDays, Clock3, MapPin, ShieldCheck } from 'lucide-react'
 import { GuestbookForm } from '@/components/guestbook-form'
 import { HeaderLogos } from '@/components/header-logos'
 
@@ -37,12 +37,6 @@ export default function Page() {
         <header className="flex flex-wrap items-center justify-between gap-4">
           <HeaderLogos />
           <div className="flex items-center gap-3">
-            <Link
-              href="/rekap"
-              className="inline-flex items-center gap-2 rounded-2xl border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground transition hover:bg-accent hover:text-accent-foreground"
-            >
-              <FileText className="size-4 text-primary" /> Rekap Tamu
-            </Link>
             <div className="hidden items-center gap-2 rounded-full bg-accent px-3 py-2 text-xs font-semibold text-accent-foreground sm:flex">
               <ShieldCheck className="size-4" aria-hidden="true" /> Data terlindungi
             </div>
@@ -72,7 +66,6 @@ export default function Page() {
 
         <footer className="flex flex-wrap items-center justify-between gap-4 border-t border-border py-5 text-xs text-muted-foreground">
           <span>Buku Tamu Digital • SPPG Bontang Selatan Berbas Tengah</span>
-          <Link href="/rekap" className="font-semibold text-primary hover:underline">Lihat Rekapitulasi Tamu &rarr;</Link>
         </footer>
       </div>
     </main>
