@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { logoutAdmin } from '@/app/actions/auth'
+import { getGuestbookEntries } from '@/app/actions/guestbook'
 import {
   ArrowDown,
   ArrowLeft,
@@ -115,6 +116,52 @@ export function RekapView({ initialEntries }: RekapViewProps) {
       if (eventSource) {
         eventSource.close()
       }
+    }
+  }, [])
+
+  // Real-time polling fallback (works 100% reliably on Vercel Serverless)
+  useEffect(() => {
+    let isMounted = true
+
+    async function checkForUpdates() {
+      try {
+        const res = await getGuestbookEntries()
+        if (res.success && Array.isArray(res.data) && isMounted) {
+          const freshEntries = res.data as GuestEntry[]
+          setEntries((prev) => {
+            const existingIds = new Set(prev.map((e) => e.id))
+            const brandNewEntries = freshEntries.filter((e) => !existingIds.has(e.id))
+
+            if (brandNewEntries.length > 0) {
+              setNewEntryIds((prevIds) => {
+                const nextIds = new Set(prevIds)
+                brandNewEntries.forEach((e) => nextIds.add(e.id))
+                return nextIds
+              })
+
+              setTimeout(() => {
+                setNewEntryIds((prevIds) => {
+                  const nextIds = new Set(prevIds)
+                  brandNewEntries.forEach((e) => nextIds.delete(e.id))
+                  return nextIds
+                })
+              }, 5000)
+
+              return freshEntries
+            }
+            return prev
+          })
+          setIsLiveConnected(true)
+        }
+      } catch (err) {
+        // Silent catch for background polling
+      }
+    }
+
+    const interval = setInterval(checkForUpdates, 3000)
+    return () => {
+      isMounted = false
+      clearInterval(interval)
     }
   }, [])
 
